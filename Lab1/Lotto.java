@@ -7,9 +7,9 @@ public class Lotto {
         Random random = new Random();
         Set<Integer> numbers = new HashSet<>();
 
-        // losowanie 6 różnych liczb z zakresu 1–49
+
         while (numbers.size() < 6) {
-            int number = random.nextInt(49) + 1; // losuje liczby od 1 do 49
+            int number = random.nextInt(49) + 1;
             numbers.add(number);
         }
 
