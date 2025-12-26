@@ -1,17 +1,17 @@
 package symulator;
 
 public class Komponent {
-    protected String producent;
-    protected String model;
+    private String producent;
+    private String model;
 
     public Komponent(String producent, String model) {
         this.producent = producent;
         this.model = model;
     }
-    String get_Producent() {
+    public String getProducent(){
         return producent;
     }
-    String get_Model() {
+    public String getModel() {
         return model;
     }
 }
