@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.control.TitledPane?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.MenuBar?>
+<?import javafx.scene.control.Menu?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.ToolBar?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.image.Image?>
+
+<BorderPane xmlns:fx="http://javafx.com/fxml"
+            fx:controller="com.example.samochodgui.HelloController">
+
+    <top>
+        <VBox>
+            <MenuBar>
+                <Menu text="File">
+                    <MenuItem text="Close" onAction="#zamknijAplikacje"/>
+                </Menu>
+                <Menu text="Edit">
+                    <MenuItem text="Delete" onAction="#wyczyscFormularz"/>
+                </Menu>
+            </MenuBar>
+
+            <ToolBar>
+                <ComboBox fx:id="wyborSamochodu" promptText="Wybierz samochód" prefWidth="150" onAction="#wybierzAutoZListy"/>
+
+                <Button text="Dodaj nowy" onAction="#utworzNowySamochod"/>
+                <Button text="Usuń" onAction="#wyczyscFormularz"/>
+            </ToolBar>
+        </VBox>
+    </top>
+    <left>
+        <VBox spacing="10" style="-fx-padding: 10; -fx-background-color: #f0f0f0; -fx-pref-width: 250;">
+
+            <TitledPane text="Samochód" collapsible="false">
+                <VBox spacing="5">
+                    <Label text="Model:"/>
+                    <TextField fx:id="jakimodel" promptText="np. Audi" />
+
+                    <Label text="Nr rejestracyjny:"/>
+                    <TextField fx:id="nrrejstracji" promptText="KR 12345" />
+
+                    <Label text="Waga (kg):"/>
+                    <TextField fx:id="wagaField" text="1500" editable="false"/>
+
+                    <Label text="Prędkość (km/h):"/>
+                    <TextField fx:id="predkoscField" text="0" editable="false"/>
+                    <HBox spacing="10" style="-fx-padding: 10 0 0 0;">
+                        <Button text="Włącz" style="-fx-base: lightgreen;" onAction="#Wlacz_auto"/>
+                        <Button text="Wyłącz" style="-fx-base: salmon;" onAction="#wylacz_auto"/>
+                    </HBox>
+                </VBox>
+            </TitledPane>
+
+            <TitledPane text="Skrzynia Biegów" collapsible="false">
+                <VBox spacing="5">
+                    <Label text="Aktualny bieg:"/>
+                    <TextField fx:id="biegPole" text="0" editable="false" />
+
+                    <HBox spacing="10">
+                        <Button text="Bieg +" onAction="#zwieksz_bieg"/>
+                        <Button text="Bieg -" onAction="#zmniejsz_bieg"/>
+                    </HBox>
+                </VBox>
+            </TitledPane>
+
+            <TitledPane text="Silnik" collapsible="false">
+                <VBox spacing="5">
+                    <Label text="Obroty silnika:"/>
+                    <TextField fx:id="obrotyPole" text="0" editable="false" />
+
+                    <HBox spacing="10">
+                        <Button text="Dodaj gazu" onAction="#dodaj_gazu"/>
+                        <Button text="Ujmij gazu" onAction="#pusc_gaz"/>
+                    </HBox>
+                </VBox>
+            </TitledPane>
+
+            <TitledPane text="Sprzęgło" collapsible="false">
+                <VBox spacing="5">
+                    <Label text="Stan sprzęgła:"/>
+                    <TextField fx:id="sprzegloField" text="Puszczone" editable="false" />
+
+                    <HBox spacing="10">
+                        <Button text="Wciśnij" onAction="#wcisnij_sprzeglo"/>
+                        <Button text="Zwolnij" onAction="#zwolnij_sprzeglo"/>
+                    </HBox>
+                </VBox>
+            </TitledPane>
+
+        </VBox>
+    </left>
+
+    <center>
+        <VBox alignment="CENTER" style="-fx-background-color: white;">
+            <ImageView fx:id="obrazekSamochodu" fitHeight="300.0" fitWidth="400.0" pickOnBounds="true" preserveRatio="true">
+            </ImageView>
+            <Label text="Widok samochodu" style="-fx-text-fill: grey;"/>
+        </VBox>
+    </center>
+
+</BorderPane>
