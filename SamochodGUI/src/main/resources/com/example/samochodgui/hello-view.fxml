@@ -13,7 +13,6 @@
 <?import javafx.scene.control.ToolBar?>
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.image.ImageView?>
-<?import javafx.scene.image.Image?>
 
 <BorderPane xmlns:fx="http://javafx.com/fxml"
             fx:controller="com.example.samochodgui.HelloController">
@@ -37,22 +36,24 @@
             </ToolBar>
         </VBox>
     </top>
+
     <left>
         <VBox spacing="10" style="-fx-padding: 10; -fx-background-color: #f0f0f0; -fx-pref-width: 250;">
 
             <TitledPane text="Samochód" collapsible="false">
                 <VBox spacing="5">
                     <Label text="Model:"/>
-                    <TextField fx:id="jakimodel" promptText="np. Audi" />
+                    <TextField fx:id="jakimodel" promptText="np. Audi" editable="false"/>
 
                     <Label text="Nr rejestracyjny:"/>
-                    <TextField fx:id="nrrejstracji" promptText="KR 12345" />
+                    <TextField fx:id="nrrejstracji" promptText="KR 12345" editable="false"/>
 
                     <Label text="Waga (kg):"/>
                     <TextField fx:id="wagaField" text="1500" editable="false"/>
 
                     <Label text="Prędkość (km/h):"/>
                     <TextField fx:id="predkoscField" text="0" editable="false"/>
+
                     <HBox spacing="10" style="-fx-padding: 10 0 0 0;">
                         <Button text="Włącz" style="-fx-base: lightgreen;" onAction="#Wlacz_auto"/>
                         <Button text="Wyłącz" style="-fx-base: salmon;" onAction="#wylacz_auto"/>
