@@ -63,6 +63,9 @@
 
             <TitledPane text="Skrzynia Biegów" collapsible="true">
                 <VBox spacing="5">
+                    <Label text="Typ skrzyni:"/>
+                    <TextField fx:id="typSkrzyniPole" editable="false"/>
+
                     <Label text="Aktualny bieg:"/>
                     <TextField fx:id="biegPole" text="0" editable="false" />
 
@@ -75,6 +78,12 @@
 
             <TitledPane text="Silnik" collapsible="true">
                 <VBox spacing="5">
+                    <Label text="Typ silnika:"/>
+                    <TextField fx:id="typSilnikaPole" editable="false"/>
+
+                    <Label text="Max obroty:"/>
+                    <TextField fx:id="maxObrotyPole" editable="false"/>
+
                     <Label text="Obroty silnika:"/>
                     <TextField fx:id="obrotyPole" text="0" editable="false" />
 

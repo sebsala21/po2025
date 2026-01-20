@@ -46,109 +46,108 @@ public class HelloController {
     private Samochod mojeAuto;
 
     // Śledzenie wizualizacji i słuchaczy
-    private final Map<Samochod, ImageView> widokiSamochodow = new HashMap<>();
+    private final Map<Samochod, ImageView> widokiSamochodow = new HashMap<>();//daje mus samochod(wart logicsna) i obrazek a otrzymuje ten obiekt
     private Listener sluchaczPanelu; // Słuchacz dla *aktualnie wybranego* samochodu, aby aktualizować panele UI
 
-    private static ObservableList<Samochod> listaSamochodow = FXCollections.observableArrayList();
+    private static ObservableList<Samochod> listaSamochodow = FXCollections.observableArrayList();// przechowuje stworzone auta
 
     // Ta metoda uruchamia się sama przy starcie okna
     @FXML
-    public void initialize() {
+    public void initialize() {//automatyczny start
         System.out.println("HelloController initialized");
 
-        // Zdefiniuj słuchacza, który aktualizuje pola tekstowe panelu sterowania
-        sluchaczPanelu = () -> Platform.runLater(this::odswiez);
+        // Zdefiniuj słuchacza, który aktualizuje pola tekstowe panelu sterowania zmienia to cos sie dzieje na obrazku,on wydaje rozkazy mówi np przesuń sie o 5 pikseli a wizualizacja(imageVieww) sie wtedy przesówa
+        sluchaczPanelu = () -> Platform.runLater(this::odswiez);//mówi gdy cos sie u ciebie zmieni uruchom metodę odśwież
 
-        // Ustaw przycinanie (clipping) dla mapy, aby samochód nie wychodził poza obszar
+        // Ustaw przycinanie dla mapy, aby samochód nie wychodził poza obszar
         // i nie zasłaniał przycisków
         Rectangle clip = new Rectangle();
         clip.widthProperty().bind(mapa.widthProperty());
         clip.heightProperty().bind(mapa.heightProperty());
-        mapa.setClip(clip);
+        mapa.setClip(clip);//ustawia niewidzialną sciane gdzie nie moge poza nia wyjechać
 
-        if (listaSamochodow.isEmpty()) {
+        if (listaSamochodow.isEmpty()) {//czy lista aut jest pusta
             mojeAuto = new Samochod();
-            listaSamochodow.add(mojeAuto);
+            listaSamochodow.add(mojeAuto);//jesli tak domyslnie dodaje to moje nowe audi do listy
         } else {
-            mojeAuto = listaSamochodow.get(0);
+            mojeAuto = listaSamochodow.get(0);//jesli nie ti bierze auto z brzegu bo musi cos byc zeby nie wyskoczył bład
         }
 
-        // Wymuś pozycję poniżej napisu "Mapa" (teraz to środek auta)
+        // Wymuś pozycję poniżej napisu "Mapa"
         if (mojeAuto != null) {
             mojeAuto.getPozycja().ustaw(25.0, 40.0);
         }
 
-        wyborSamochodu.setItems(listaSamochodow);
-        wyborSamochodu.getSelectionModel().select(mojeAuto);
+        wyborSamochodu.setItems(listaSamochodow);//wkłada liste aut do rozwijanego menu
+        wyborSamochodu.getSelectionModel().select(mojeAuto);//zaznacza auto ktore stworzylismy przed chwila
 
         // Zainicjuj wizualizacje dla istniejących samochodów
         for (Samochod auto : listaSamochodow) {
             stworzWizualizacjeSamochodu(auto);
-        }
+        }//dla kazdego auta które jest na liscie, wywołuje metode ktora tworzy nowy obrazek car.png i wrzuca go na mape
 
         // Dołącz słuchacza panelu do początkowego samochodu
         if (mojeAuto != null) {
             mojeAuto.dodajSluchacza(sluchaczPanelu);
-        }
+        }//fizycznie podpina stworzonego sluchacza do aktualnego auta
 
         // Nasłuchuj nowych samochodów
-        listaSamochodow.addListener((javafx.collections.ListChangeListener<Samochod>) c -> {
-            while (c.next()) {
-                if (c.wasAdded() && !c.getAddedSubList().isEmpty()) {
-                    for (Samochod noweAuto : c.getAddedSubList()) {
-                        stworzWizualizacjeSamochodu(noweAuto);
+        listaSamochodow.addListener((javafx.collections.ListChangeListener<Samochod>) zmiana -> {//gdy w drugim kodzie klikne zatwiedz i nowe auto wpadnie do listy to wtedy to sie uruchamia
+            while (zmiana.next()) {
+                if (zmiana.wasAdded() && !zmiana.getAddedSubList().isEmpty()) {//czy ono "wjechałp" na liste
+                    for (Samochod noweAuto : zmiana.getAddedSubList()) {
+                        stworzWizualizacjeSamochodu(noweAuto);//tworzy obrazek na mapie
                     }
                     // Automatyczne zaznaczanie ostatnio dodanego samochodu
-                    Samochod ostatnioDodany = c.getAddedSubList().get(0);
-                    wyborSamochodu.getSelectionModel().select(ostatnioDodany);
-                    wybierzAutoZListy();
+                    Samochod ostatnioDodany = zmiana.getAddedSubList().get(0);
+                    wyborSamochodu.getSelectionModel().select(ostatnioDodany);//automatycznie ustawia nowe auto w rozwijanej liscie(combobox)
+                    wybierzAutoZListy();//sprawia ze przyciski np gaz bieg od razu steruja tym nowym autem
                 }
             }
-        });
+        });//w skrócie jak dodam nowe auto to od razu je widze i moge nim sterować
 
-        mapa.setOnMouseClicked(event -> {
-            if (mojeAuto != null) {
-                // Teraz celem jest dokładnie punkt kliknięcia (Logika "Centrum")
+        mapa.setOnMouseClicked(event -> {//jak ktos kliknie myszka to mam wykonać tek kod w srodku klamerek
+            if (mojeAuto != null) {//zabezpieczenie
+                // pobiera z baczki event te dane
                 double celX = event.getX();
                 double celY = event.getY();
 
                 System.out.println("Kliknięto w mapę: " + celX + ", " + celY + " -> Cel: " + celX + ", " + celY);
-                Pozycja cel = new Pozycja(celX, celY);
-                mojeAuto.jedzDo(cel);
+                Pozycja cel = new Pozycja(celX, celY);//pakuje te nowe dane w jeden obiekt
+                mojeAuto.jedzDo(cel);//wydaje rozkaz by tam jechał
             }
         });
 
-        odswiez();
+        odswiez();//recznie wymmuszam program do pobrania dazych z auta i wpisania ich do okienka
     }
 
     // Tworzy element wizualny dla samochodu i dołącza słuchacza pozycji
     private void stworzWizualizacjeSamochodu(Samochod samochod) {
         if (widokiSamochodow.containsKey(samochod))
-            return;
+            return;//zabezpieczenie zeby tylko był jeden obrazek dla kazdegog samochodu
 
         try {
             ImageView widok = new ImageView(new Image(getClass().getResource("/images/car.png").toExternalForm()));
             widok.setFitWidth(300);
-            widok.setPreserveRatio(true);
+            widok.setPreserveRatio(true);//narodziny obrazka
 
-            mapa.getChildren().add(widok);
-            widokiSamochodow.put(samochod, widok);
+            mapa.getChildren().add(widok);//wrzuca obrazek na to tło
+            widokiSamochodow.put(samochod, widok);//zapisuje ze dla tego konkretnego obrazka jest ten samochód z tymii parametrami
 
             // Funkcja do aktualizacji wizualnej pozycji (CENTROWANIE)
             Runnable aktualizujWizualnie = () -> {
                 double bruttoW = widok.getBoundsInLocal().getWidth();
-                double bruttoH = widok.getBoundsInLocal().getHeight();
-                // Fallback jeśli jeszcze nie przeliczone
+                double bruttoH = widok.getBoundsInLocal().getHeight();//sprawdza jak szeroki i wysoki jest obrazek w dane milisekundzie
+
                 if (bruttoW == 0)
                     bruttoW = 300;
-                if (bruttoH == 0)
-                    bruttoH = 150;
+                if (bruttoH == 0)//gdy nie zdazył przeliczyć i dał 0 to zmień na 300
+                    bruttoH = 150;//pobiera wymiary obrazka i zabezpiecza sie przed błedem
 
                 Pozycja pos = samochod.getPozycja();
-                // Odejmij połowę wymiarów, aby środek obrazka był w 'pos'
                 widok.setTranslateX(pos.getX() - bruttoW / 2.0);
                 widok.setTranslateY(pos.getY() - bruttoH / 2.0);
-            };
+            };//centruje obrazek tak zeby srodek obrazeka był dokładnie w punkcie w którym powinien byc
 
             // Ustaw pozycję początkową natychmiast
             aktualizujWizualnie.run();
@@ -158,30 +157,31 @@ public class HelloController {
 
         } catch (Exception e) {
             System.err.println("Nie można załadować obrazka dla nowego samochodu: " + e.getMessage());
-        }
+        }//gdy plik nie istnieje to nie wywalaj erroru tylko dzialaj dalej
     }
 
-    public static void dodajSamochodDoListy(String model, String rejestracja, double waga, int predkosc) {
-        Samochod nowySamochod = new Samochod(model, rejestracja, waga, predkosc);
+    public static void dodajSamochodDoListy(String model, String rejestracja, double waga, int predkosc, int maxObroty,
+            boolean automat, String typSilnika) {//przyjmuje surowe dane
+        Samochod nowySamochod = new Samochod(model, rejestracja, waga, predkosc, maxObroty, automat, typSilnika);//tworzy ten obiekt który ma sklejone wsyzstkie te dane
 
         // te same liczby co w metodzie initialize)
         nowySamochod.getPozycja().ustaw(25.0, 40.0);
 
-        listaSamochodow.add(nowySamochod);
+        listaSamochodow.add(nowySamochod);//wrzuca go do listy
     }
 
     @FXML
     public void otworzOknoDodawania() {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("DodajSamochod.fxml"));
-            Parent root = loader.load();
-            Stage stage = new Stage();
+            Parent root = loader.load();//zamienia plik tekstowy XML na gotowe obiekty JAVA które komputer moze wyswietlić
+            Stage stage = new Stage();//tworze te nowe okno
             stage.setTitle("Dodaj nowy samochód");
-            stage.setScene(new Scene(root));
-            stage.show();
+            stage.setScene(new Scene(root));//zmienna root to kontener czyli zawartość tego okna, Stage to ramka obrazu a Scene(root) to płótno
+            stage.show();//fizycznie pojawia sie to na moim komputerze
         } catch (IOException e) {
             e.printStackTrace();
-        }
+        }//zabezpieczenie
     }
 
     @FXML
@@ -244,7 +244,7 @@ public class HelloController {
     }
 
     @FXML
-    public void wybierzAutoZListy() {
+    public void wybierzAutoZListy() {//metoda przeciadki w combobox wybiram inny samochód
         Samochod wybrany = wyborSamochodu.getSelectionModel().getSelectedItem();
         if (wybrany != null && wybrany != mojeAuto) {
 
@@ -270,34 +270,30 @@ public class HelloController {
         if (mojeAuto == null)
             return;
 
-        // 1. Zatrzymaj wątek samochodu
+        // Zatrzymaj wątek samochodu
         mojeAuto.zakoncz();
 
-        // 2. Usuń wizualizację z mapy
+        //Usuń wizualizację z mapy
         ImageView widok = widokiSamochodow.get(mojeAuto);
         if (widok != null) {
             mapa.getChildren().remove(widok);
             widokiSamochodow.remove(mojeAuto);
         }
 
-        // 3. Usuń słuchacza panelu
+        // Usuń słuchacza panelu
         if (sluchaczPanelu != null) {
             mojeAuto.usunSluchacza(sluchaczPanelu);
         }
 
-        // 4. Usuń z listy
+        // Usuń z listy
         listaSamochodow.remove(mojeAuto);
 
-        // 5. Zaktualizuj wybór
+        //  Zaktualizuj wybór
         if (!listaSamochodow.isEmpty()) {
             // Wybierz pierwszy dostępny
             Samochod noweAuto = listaSamochodow.get(0);
             wyborSamochodu.getSelectionModel().select(noweAuto);
-            // Listener listy wywoła wybierzAutoZListy, ale dla pewności:
-            // wybierzAutoZListy() zostanie wywołane przez zmianę w ComboBox jeśli jest
-            // zbindowany?
-            // ComboBox jest zbindowany z listą, ale selekcja to co innego.
-            // Ręcznie ustawiamy nowe auto jako wybrane w logice
+
             wybierzAutoZListy();
         } else {
             // Brak samochodów
@@ -317,30 +313,46 @@ public class HelloController {
         System.out.println("Usunięto samochód.");
     }
 
+    @FXML
+    private TextField typSkrzyniPole;
+    @FXML
+    private TextField typSilnikaPole;
+    @FXML
+    private TextField maxObrotyPole;
+
     // zaktualizujWidok
     private void odswiez() {
         if (mojeAuto == null)
             return;
-
+//pobiera gootowe napisy z obiekty i wkleja je w pola na górze okna
         jakimodel.setText(mojeAuto.getModel());
         nrrejstracji.setText(mojeAuto.getNrRejestracyjny());
-
+//bierze numer biegu z wnetrza samochodu i wyswietla go na ekranie
         int aktualnyBieg = mojeAuto.getSkrzynia().getAktualnyBieg();
         biegPole.setText(String.valueOf(aktualnyBieg));
-
+//sprawdza jaki typ i wstawia go w pole tpyskrzyni pole
+        if (mojeAuto.getSkrzynia().czyAutomatyczna()) {
+            typSkrzyniPole.setText("Automatyczna");
+        } else {
+            typSkrzyniPole.setText("Manualna");
+        }
+//podaje obroty i wyswietlam max obroty i typ silnika
         double aktualneObroty = mojeAuto.getSilnik().getObroty();
         obrotyPole.setText(String.format("%.0f", aktualneObroty));// zaokrągla
 
+        maxObrotyPole.setText(String.valueOf(mojeAuto.getSilnik().getMaxObroty()));
+        typSilnikaPole.setText(mojeAuto.getSilnik().getTyp());
+// na sprzegle czy wcisniete czy nie
         if (mojeAuto.getSprzeglo().czyWcisniete()) {
             sprzegloField.setText("Wciśnięte");
         } else {
             sprzegloField.setText("Puszczone");
         }
-
+//waga i predkość
         wagaField.setText(String.valueOf(mojeAuto.getWaga()));
         predkoscField.setText(String.format("%.1f", mojeAuto.getAktualnaPredkosc()));// zaokrągla
     }
-
+//wyswietla na ekranie wyskakujące okienko z komunikatem o błędzie
     private void pokazBlad(String wiadomosc) {
         javafx.scene.control.Alert alert = new javafx.scene.control.Alert(javafx.scene.control.Alert.AlertType.ERROR);
         alert.setTitle("Błąd");
