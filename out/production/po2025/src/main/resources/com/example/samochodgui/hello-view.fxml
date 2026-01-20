@@ -13,6 +13,7 @@
 <?import javafx.scene.control.ToolBar?>
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.image.ImageView?>
+<?import javafx.scene.image.Image?>
 
 <BorderPane xmlns:fx="http://javafx.com/fxml"
             fx:controller="com.example.samochodgui.HelloController">
@@ -24,7 +25,7 @@
                     <MenuItem text="Close" onAction="#zamknijAplikacje"/>
                 </Menu>
                 <Menu text="Edit">
-                    <MenuItem text="Delete" onAction="#usunSamochod"/>
+                    <MenuItem text="Delete" onAction="#wyczyscFormularz"/>
                 </Menu>
             </MenuBar>
 
@@ -32,28 +33,26 @@
                 <ComboBox fx:id="wyborSamochodu" promptText="Wybierz samochód" prefWidth="150" onAction="#wybierzAutoZListy"/>
 
                 <Button text="Dodaj nowy" onAction="#utworzNowySamochod"/>
-                <Button text="Usuń" onAction="#usunSamochod"/>
+                <Button text="Usuń" onAction="#wyczyscFormularz"/>
             </ToolBar>
         </VBox>
     </top>
-
     <left>
         <VBox spacing="10" style="-fx-padding: 10; -fx-background-color: #f0f0f0; -fx-pref-width: 250;">
 
-            <TitledPane text="Samochód" collapsible="true">
+            <TitledPane text="Samochód" collapsible="false">
                 <VBox spacing="5">
                     <Label text="Model:"/>
-                    <TextField fx:id="jakimodel" promptText="np. Audi" editable="false"/>
+                    <TextField fx:id="jakimodel" promptText="np. Audi" />
 
                     <Label text="Nr rejestracyjny:"/>
-                    <TextField fx:id="nrrejstracji" promptText="KR 12345" editable="false"/>
+                    <TextField fx:id="nrrejstracji" promptText="KR 12345" />
 
                     <Label text="Waga (kg):"/>
                     <TextField fx:id="wagaField" text="1500" editable="false"/>
 
                     <Label text="Prędkość (km/h):"/>
                     <TextField fx:id="predkoscField" text="0" editable="false"/>
-
                     <HBox spacing="10" style="-fx-padding: 10 0 0 0;">
                         <Button text="Włącz" style="-fx-base: lightgreen;" onAction="#Wlacz_auto"/>
                         <Button text="Wyłącz" style="-fx-base: salmon;" onAction="#wylacz_auto"/>
@@ -61,7 +60,7 @@
                 </VBox>
             </TitledPane>
 
-            <TitledPane text="Skrzynia Biegów" collapsible="true">
+            <TitledPane text="Skrzynia Biegów" collapsible="false">
                 <VBox spacing="5">
                     <Label text="Aktualny bieg:"/>
                     <TextField fx:id="biegPole" text="0" editable="false" />
@@ -73,7 +72,7 @@
                 </VBox>
             </TitledPane>
 
-            <TitledPane text="Silnik" collapsible="true">
+            <TitledPane text="Silnik" collapsible="false">
                 <VBox spacing="5">
                     <Label text="Obroty silnika:"/>
                     <TextField fx:id="obrotyPole" text="0" editable="false" />
@@ -85,7 +84,7 @@
                 </VBox>
             </TitledPane>
 
-            <TitledPane text="Sprzęgło" collapsible="true">
+            <TitledPane text="Sprzęgło" collapsible="false">
                 <VBox spacing="5">
                     <Label text="Stan sprzęgła:"/>
                     <TextField fx:id="sprzegloField" text="Puszczone" editable="false" />
@@ -101,9 +100,11 @@
     </left>
 
     <center>
-        <javafx.scene.layout.Pane fx:id="mapa" style="-fx-background-color: lightgreen;">
-            <Label text="Mapa" style="-fx-text-fill: green; -fx-font-weight: bold;" layoutX="10" layoutY="10"/>
-        </javafx.scene.layout.Pane>
+        <VBox alignment="CENTER" style="-fx-background-color: white;">
+            <ImageView fx:id="obrazekSamochodu" fitHeight="300.0" fitWidth="400.0" pickOnBounds="true" preserveRatio="true">
+            </ImageView>
+            <Label text="Widok samochodu" style="-fx-text-fill: grey;"/>
+        </VBox>
     </center>
 
 </BorderPane>
