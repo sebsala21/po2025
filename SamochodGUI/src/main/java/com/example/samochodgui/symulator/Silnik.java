@@ -4,9 +4,12 @@ public class Silnik extends Komponent {
     private int maxObroty;
     private int obroty;
 
-    public Silnik(String producent, String model) {
+    private String typ; // "Diesel" lub "Benzyna"
+
+    public Silnik(String producent, String model, int maxObroty, String typ) {
         super(producent, model);
-        this.maxObroty = 6000;
+        this.maxObroty = maxObroty;
+        this.typ = typ;
         this.obroty = 0;
     }
 
@@ -22,6 +25,14 @@ public class Silnik extends Komponent {
 
     public int getObroty() {
         return obroty;
+    }
+
+    public int getMaxObroty() {
+        return maxObroty;
+    }
+
+    public String getTyp() {
+        return typ;
     }
 
     public void zwiekszObroty() {

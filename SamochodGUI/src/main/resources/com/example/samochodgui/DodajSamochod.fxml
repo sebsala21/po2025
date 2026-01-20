@@ -23,6 +23,11 @@
 
         <Label text="Prędkość maks. (km/h):" GridPane.rowIndex="3" GridPane.columnIndex="0"/>
         <TextField fx:id="predkoscPole" GridPane.rowIndex="3" GridPane.columnIndex="1"/>
+        <Label text="Silnik:" GridPane.rowIndex="4" GridPane.columnIndex="0"/>
+        <ComboBox fx:id="silnikBox" GridPane.rowIndex="4" GridPane.columnIndex="1"/>
+
+        <Label text="Skrzynia biegów:" GridPane.rowIndex="5" GridPane.columnIndex="0"/>
+        <ComboBox fx:id="skrzyniaBox" GridPane.rowIndex="5" GridPane.columnIndex="1"/>
     </GridPane>
 
     <HBox spacing="15" alignment="CENTER">
